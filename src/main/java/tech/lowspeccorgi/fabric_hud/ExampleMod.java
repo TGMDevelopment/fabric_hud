@@ -14,6 +14,7 @@ import tech.lowspeccorgi.fabric_hud.huds.DraggableHud;
 
 public class ExampleMod implements ModInitializer {
 	private KeyBinding keyBinding;
+	public static int fps;
 
 	@Override
 	public void onInitialize() {

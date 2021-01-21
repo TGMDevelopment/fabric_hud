@@ -18,6 +18,10 @@ public class Element {
         this.y = y;
     }
 
+    public void updateElement() {
+        //
+    };
+
     public Element getInstanceOfElement() {
         return new Element(true, 0.0, 0.0);
     }

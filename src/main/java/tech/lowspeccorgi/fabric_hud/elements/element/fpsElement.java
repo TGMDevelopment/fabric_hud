@@ -1,5 +1,9 @@
 package tech.lowspeccorgi.fabric_hud.elements.element;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import net.minecraft.client.MinecraftClient;
+import tech.lowspeccorgi.fabric_hud.ExampleMod;
 import tech.lowspeccorgi.fabric_hud.elements.Element;
 
 public class fpsElement extends Element {
@@ -12,6 +16,11 @@ public class fpsElement extends Element {
     @Override
     public fpsElement getInstanceOfElement() {
         return new fpsElement();
+    }
+
+    @Override
+    public void updateElement() {
+        super.text = "FPS: " + ExampleMod.fps;
     }
 
     @Override

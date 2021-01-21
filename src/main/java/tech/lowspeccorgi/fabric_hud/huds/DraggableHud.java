@@ -44,10 +44,10 @@ public class DraggableHud extends Screen {
         List<Element> elements = ElementRegistry.getELEMENTS();
         for (int i = 0; i < elements.size(); i++) {
             final int temp = i;
-            this.buttonTrayButtons.add(new CustomGuiButton((this.width / elements.size()) * i,
-                    this.height - 47, this.width / elements.size(), 20,
-                    new LiteralText(elements.get(i).getText()), elements.get(i).getDesc(),
-                    (ButtonWidget) -> {
+            this.buttonTrayButtons.add(new CustomGuiButton(
+                    ((this.width / elements.size()) * i) - ((i == 0) ? 0 : 1), this.height - 47,
+                    this.width / elements.size(), 20, new LiteralText(elements.get(i).getText()),
+                    elements.get(i).getDesc(), (ButtonWidget) -> {
                         elementManager.addElement(elements.get(temp).getInstanceOfElement());
                     }));
         }

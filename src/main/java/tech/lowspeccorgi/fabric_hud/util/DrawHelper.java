@@ -1,16 +1,7 @@
 package tech.lowspeccorgi.fabric_hud.util;
 
-import javax.swing.plaf.ColorUIResource;
-import com.mojang.blaze3d.systems.RenderSystem;
-import org.apache.commons.lang3.tuple.Pair;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.BufferRenderer;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.Matrix4f;
 import java.awt.*;
 
 public class DrawHelper {

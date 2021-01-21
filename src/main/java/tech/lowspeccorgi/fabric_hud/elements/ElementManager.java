@@ -26,6 +26,7 @@ public class ElementManager {
                 MinecraftClient.getInstance().textRenderer.draw(matrixstack,
                         new LiteralText(element.getText()).asOrderedText(), (float) element.getX(),
                         (float) element.getY(), new ColorUIResource(255, 34, 53).getRGB());
+                element.updateElement();
             }
         });
     }
