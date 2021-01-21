@@ -10,8 +10,8 @@ public class cpsElement extends Element {
     }
 
     @Override
-    public fpsElement getInstanceOfElement() {
-        return new fpsElement();
+    public cpsElement getInstanceOfElement() {
+        return new cpsElement();
     }
 
     @Override

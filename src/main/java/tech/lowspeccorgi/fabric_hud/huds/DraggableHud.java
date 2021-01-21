@@ -15,7 +15,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import tech.lowspeccorgi.fabric_hud.elements.Element;
 import tech.lowspeccorgi.fabric_hud.elements.ElementManager;
-import tech.lowspeccorgi.fabric_hud.elements.category.CategoryRegister;
+import tech.lowspeccorgi.fabric_hud.elements.ElementRegistry;
 import tech.lowspeccorgi.fabric_hud.huds.elements.CustomGuiButton;
 import tech.lowspeccorgi.fabric_hud.util.DrawHelper;
 import java.awt.*;
@@ -25,8 +25,6 @@ public class DraggableHud extends Screen {
 
     private final MinecraftClient CLIENT_OBJ = MinecraftClient.getInstance();
     private List<CustomGuiButton> buttonTrayButtons = Lists.newArrayList();
-    private List<ArrayList<CustomGuiButton>> dropDownButtons =
-            new ArrayList<ArrayList<CustomGuiButton>>();
     private Element captured;
     private boolean buttonTrayOpen = false;
 
@@ -38,47 +36,26 @@ public class DraggableHud extends Screen {
     @Override
     protected void init() {
         this.buttonTrayButtons.clear();
-        this.dropDownButtons.clear();
-        this.addButton(new CustomGuiButton((this.width / 2) - 50, this.height - 50, 100, 20,
+        this.addButton(new CustomGuiButton((this.width / 2) - 50, this.height - 70, 100, 20,
                 new LiteralText("Open button menu"), (ButtonWidget) -> {
                     buttonTrayOpen = !buttonTrayOpen;
                 }));
 
-        for (int i = 0; i < CategoryRegister.CATEGORIES.size(); i++) {
+        List<Element> elements = ElementRegistry.getELEMENTS();
+        for (int i = 0; i < elements.size(); i++) {
             final int temp = i;
-            this.buttonTrayButtons
-                    .add(new CustomGuiButton((this.width / CategoryRegister.CATEGORIES.size()) * i,
-                            this.height - 120, this.width / CategoryRegister.CATEGORIES.size(), 20,
-                            new LiteralText(CategoryRegister.CATEGORIES.get(i).getCategoryName()),
-                            (ButtonWidget) -> {
-                                CategoryRegister.CATEGORIES.get(temp).setVisible(
-                                        !CategoryRegister.CATEGORIES.get(temp).getVisible());
-                            }));
-
-            this.dropDownButtons.add(new ArrayList<CustomGuiButton>());
-            for (int j = 0; j < CategoryRegister.CATEGORIES.get(i).getELEMENTS().size(); j++) {
-                this.dropDownButtons.get(i).add(j, new CustomGuiButton(
-                        (this.width / CategoryRegister.CATEGORIES.size()) * i,
-                        (this.height - 120) - ((j + 1) * 20),
-                        this.width / CategoryRegister.CATEGORIES.size(), 20,
-                        new LiteralText(
-                                CategoryRegister.CATEGORIES.get(i).getELEMENTS().get(j).getText()),
-                        (ButtonWidget) -> {
-                            System.out.println("Test./");
-                        }));
-            }
+            this.buttonTrayButtons.add(new CustomGuiButton((this.width / elements.size()) * i,
+                    this.height - 47, this.width / elements.size(), 20,
+                    new LiteralText(elements.get(i).getText()), elements.get(i).getDesc(),
+                    (ButtonWidget) -> {
+                        elementManager.addElement(elements.get(temp).getInstanceOfElement());
+                    }));
         }
     }
 
-    private void addButtonToTray(int i) {
-        this.elementManager.addElement(
-                CategoryRegister.CATEGORIES.get(i).getELEMENTS().get(i).getInstanceOfElement());
-    }
 
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        DrawHelper.drawSolidQuad(matrices, 0, 0, this.width, this.height,
-                new Color(128, 128, 128, 50));
         List<Element> elements = elementManager.getElements();
         for (Element element : elements) {
             DrawHelper.drawSolidQuad(matrices, (int) element.getX(), (int) element.getY(),
@@ -86,19 +63,12 @@ public class DraggableHud extends Screen {
                     (int) element.getY() + 10, new Color(135, 148, 158, 150));
         }
         if (this.buttonTrayOpen) {
-            DrawHelper.drawSolidQuad(matrices, 0, this.height - 180, this.width, this.height - 60,
-                    new Color(255, 255, 255, 100));
-
-            for (int i = 0; i < this.buttonTrayButtons.size(); ++i) {
+            for (int i = 0; i < this.buttonTrayButtons.size(); i++) {
                 ((AbstractButtonWidget) this.buttonTrayButtons.get(i)).render(matrices, mouseX,
                         mouseY, delta);
             }
-
-            for (int i = 0; i < this.dropDownButtons.size(); i++) {
-                for (int j = 0; j < this.dropDownButtons.get(i).size(); j++) {
-                    ((AbstractButtonWidget) this.dropDownButtons.get(i).get(j)).render(matrices,
-                            mouseX, mouseY, delta);
-                }
+            for (int i = 0; i < this.buttonTrayButtons.size(); i++) {
+                this.buttonTrayButtons.get(i).tooltipRender(matrices, mouseX, mouseY, delta);
             }
         }
 
@@ -108,11 +78,9 @@ public class DraggableHud extends Screen {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        for (int i = 0; i < CategoryRegister.CATEGORIES.size(); i++) {
-            if (CategoryRegister.CATEGORIES.get(i).getVisible()) {
-                for (int j = 0; j < CategoryRegister.CATEGORIES.get(i).getELEMENTS().size(); j++) {
-                    this.dropDownButtons.get(i).get(j).mouseClicked(mouseX, mouseY, button);
-                }
+        if (this.buttonTrayOpen) {
+            for (int i = 0; i < this.buttonTrayButtons.size(); i++) {
+                this.buttonTrayButtons.get(i).mouseClicked(mouseX, mouseY, button);
             }
         }
         return super.mouseClicked(mouseX, mouseY, button);
@@ -139,6 +107,11 @@ public class DraggableHud extends Screen {
             }
         }
         return true;
+    }
+
+    @Override
+    public void renderBackground(MatrixStack matrices) {
+        super.renderBackground(matrices);
     }
 
     @Override
