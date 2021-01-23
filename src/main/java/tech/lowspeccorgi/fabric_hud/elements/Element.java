@@ -1,10 +1,23 @@
 package tech.lowspeccorgi.fabric_hud.elements;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.awt.*;
+import net.minecraft.client.gui.widget.AbstractButtonWidget;
+import net.minecraft.client.gui.widget.ToggleButtonWidget;
+
 public class Element {
     protected boolean visible;
     protected String text = "Element Template";
     protected double x;
     protected double y;
+    protected boolean test = false;
+
+    protected List<Widget> DEFAULT_BUTTONS =
+            Arrays.asList(new Widget("Toggled: ", WidgetModes.Modes.TOGGLE),
+                    new Widget("Text Color: ", WidgetModes.Modes.TOGGLE),
+                    new Widget("Background: ", WidgetModes.Modes.BUTTON));
 
     /**
      * Constructs a Element
@@ -24,6 +37,10 @@ public class Element {
 
     public Element getInstanceOfElement() {
         return new Element(true, 0.0, 0.0);
+    }
+
+    public List<Widget> getDEFAULT_BUTTONS() {
+        return DEFAULT_BUTTONS;
     }
 
     /**

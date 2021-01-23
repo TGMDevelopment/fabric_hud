@@ -1,16 +1,11 @@
 package tech.lowspeccorgi.fabric_hud.huds;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import com.google.common.collect.Lists;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.GL11;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
-import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import tech.lowspeccorgi.fabric_hud.elements.Element;
@@ -21,10 +16,13 @@ import tech.lowspeccorgi.fabric_hud.util.DrawHelper;
 import java.awt.*;
 
 public class DraggableHud extends Screen {
+
+
     private ElementManager elementManager;
 
     private final MinecraftClient CLIENT_OBJ = MinecraftClient.getInstance();
     private List<CustomGuiButton> buttonTrayButtons = Lists.newArrayList();
+    private List<CustomGuiButton> settingButtons = Lists.newArrayList();
     private Element captured;
     private boolean buttonTrayOpen = false;
 
@@ -36,6 +34,7 @@ public class DraggableHud extends Screen {
     @Override
     protected void init() {
         this.buttonTrayButtons.clear();
+
         this.addButton(new CustomGuiButton((this.width / 2) - 50, this.height - 70, 100, 20,
                 new LiteralText("Open button menu"), (ButtonWidget) -> {
                     buttonTrayOpen = !buttonTrayOpen;
@@ -51,17 +50,31 @@ public class DraggableHud extends Screen {
                         elementManager.addElement(elements.get(temp).getInstanceOfElement());
                     }));
         }
+
     }
 
 
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         List<Element> elements = elementManager.getElements();
+        this.settingButtons.clear();
         for (Element element : elements) {
             DrawHelper.drawSolidQuad(matrices, (int) element.getX(), (int) element.getY(),
                     ((int) element.getX() + textRenderer.getWidth(element.getText())),
                     (int) element.getY() + 10, new Color(135, 148, 158, 150));
+
+            this.settingButtons.add(new CustomGuiButton((int) element.getX() - 17,
+                    (int) element.getY() - 19, 17, 19, new LiteralText("⚙"), (ButtonWidget) -> {
+                        CLIENT_OBJ.openScreen(new SettingsHud(new LiteralText("settings"),
+                                element.getDEFAULT_BUTTONS()));
+                    }));
         }
+
+        for (int i = 0; i < this.settingButtons.size(); i++) {
+            ((AbstractButtonWidget) this.settingButtons.get(i)).render(matrices, mouseX, mouseY,
+                    delta);
+        }
+
         if (this.buttonTrayOpen) {
             for (int i = 0; i < this.buttonTrayButtons.size(); i++) {
                 ((AbstractButtonWidget) this.buttonTrayButtons.get(i)).render(matrices, mouseX,
@@ -82,6 +95,10 @@ public class DraggableHud extends Screen {
             for (int i = 0; i < this.buttonTrayButtons.size(); i++) {
                 this.buttonTrayButtons.get(i).mouseClicked(mouseX, mouseY, button);
             }
+        }
+
+        for (int i = 0; i < this.settingButtons.size(); i++) {
+            this.settingButtons.get(i).mouseClicked(mouseX, mouseY, button);
         }
         return super.mouseClicked(mouseX, mouseY, button);
     }
