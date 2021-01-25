@@ -16,7 +16,8 @@ import tech.lowspeccorgi.fabric_hud.util.DrawHelper;
 import java.awt.*;
 
 public class DraggableHud extends Screen {
-
+    // I hope no one has to look at this code
+    // It's pure pain
 
     private ElementManager elementManager;
 

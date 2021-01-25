@@ -31,6 +31,7 @@ public class ExampleMod implements ModInitializer {
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			while (keyBinding.wasPressed()) {
 				MinecraftClient.getInstance().openScreen(new DraggableHud(elementManager));
+
 			}
 		});
 	}

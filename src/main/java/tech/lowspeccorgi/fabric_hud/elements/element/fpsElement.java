@@ -1,8 +1,5 @@
 package tech.lowspeccorgi.fabric_hud.elements.element;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import net.minecraft.client.MinecraftClient;
 import tech.lowspeccorgi.fabric_hud.ExampleMod;
 import tech.lowspeccorgi.fabric_hud.elements.Element;
 

@@ -15,6 +15,7 @@ public class ExampleMixin {
 
 	@Inject(at = @At("TAIL"), method = "render(Z)V")
 	private void render(CallbackInfo info) {
+
 		setFps(currentFps);
 	}
 

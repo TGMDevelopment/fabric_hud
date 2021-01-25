@@ -1,11 +1,8 @@
 package tech.lowspeccorgi.fabric_hud.elements;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.awt.*;
-import net.minecraft.client.gui.widget.AbstractButtonWidget;
-import net.minecraft.client.gui.widget.ToggleButtonWidget;
+import tech.lowspeccorgi.fabric_hud.elements.Colour.Colours;
 
 public class Element {
     protected boolean visible;
@@ -14,10 +11,13 @@ public class Element {
     protected double y;
     protected boolean test = false;
 
-    protected List<Widget> DEFAULT_BUTTONS =
-            Arrays.asList(new Widget("Toggled: ", WidgetModes.Modes.TOGGLE),
-                    new Widget("Text Color: ", WidgetModes.Modes.TOGGLE),
-                    new Widget("Background: ", WidgetModes.Modes.BUTTON));
+    protected List<Widget> DEFAULT_BUTTONS = Arrays.asList(
+            new Widget("Text Color: ", WidgetModes.Modes.TOGGLE,
+                    Arrays.asList(new State("Red", Colours.RED), new State("Green", Colours.GREEN),
+                            new State("Blue", Colours.BLUE), new State("Black", Colours.BLACK))),
+            new Widget("Background: ", WidgetModes.Modes.BUTTON),
+            new Widget("Transparent background: ", WidgetModes.Modes.BUTTON),
+            new Widget("Text shadow: ", WidgetModes.Modes.BUTTON));
 
     /**
      * Constructs a Element
@@ -31,9 +31,15 @@ public class Element {
         this.y = y;
     }
 
+    public Element() {
+        this.visible = true;
+        this.x = 0.0;
+        this.y = 0.0;
+    }
+
     public void updateElement() {
         //
-    };
+    }
 
     public Element getInstanceOfElement() {
         return new Element(true, 0.0, 0.0);

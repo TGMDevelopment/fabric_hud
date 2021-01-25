@@ -22,17 +22,27 @@ public class SettingsHud extends Screen {
     @Override
     protected void init() {
         super.init();
-        for (int i = 0; i < DEFAULT_BUTTONS.size(); i++) {
-            this.addButton(new CustomGuiButton((this.width / 2) - 50, 50 + (25 * i), 75, 20,
-                    new LiteralText(DEFAULT_BUTTONS.get(i).getName()), (ButtonWidget) -> {
 
-                    }));
-        }
+    }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        return super.mouseClicked(mouseX, mouseY, button);
     }
 
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-
+        this.buttons.clear();
+        for (int i = 0; i < DEFAULT_BUTTONS.size(); i++) {
+            final int temp = i;
+            this.addButton(
+                    new CustomGuiButton((this.width / 2) - 100, 50 + (25 * i), 200, 20,
+                            new LiteralText(DEFAULT_BUTTONS.get(i).getName()
+                                    + DEFAULT_BUTTONS.get(i).getState().getName()),
+                            (ButtonWidget) -> {
+                                DEFAULT_BUTTONS.get(temp).onCLick();
+                            }));
+        }
         super.render(matrices, mouseX, mouseY, delta);
     }
 
