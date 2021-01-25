@@ -43,14 +43,14 @@ public class ElementManager {
                 // Correction: This is all ugly, never let me do ui code again
                 if ((boolean) ELEMENTS.get(i).getDEFAULT_BUTTONS().get(3).getState()
                         .getState() == true) {
-                    CLIENT_OBJ.textRenderer.draw(matrixstack,
+                    CLIENT_OBJ.textRenderer.drawWithShadow(matrixstack,
                             new LiteralText(ELEMENTS.get(i).getText()).asOrderedText(),
                             (float) ELEMENTS.get(i).getX(), (float) ELEMENTS.get(i).getY(), Colour
                                     .getColours((Colour.Colours) ELEMENTS.get(i)
                                             .getDEFAULT_BUTTONS().get(0).getState().getState())
                                     .getRGB());
                 } else {
-                    CLIENT_OBJ.textRenderer.drawWithShadow(matrixstack,
+                    CLIENT_OBJ.textRenderer.draw(matrixstack,
                             new LiteralText(ELEMENTS.get(i).getText()).asOrderedText(),
                             (float) ELEMENTS.get(i).getX(), (float) ELEMENTS.get(i).getY(), Colour
                                     .getColours((Colour.Colours) ELEMENTS.get(i)

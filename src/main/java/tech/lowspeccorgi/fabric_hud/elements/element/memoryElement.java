@@ -1,6 +1,5 @@
 package tech.lowspeccorgi.fabric_hud.elements.element;
 
-import net.minecraft.client.MinecraftClient;
 import tech.lowspeccorgi.fabric_hud.elements.Element;
 
 /*
@@ -10,7 +9,6 @@ import tech.lowspeccorgi.fabric_hud.elements.Element;
  * /elements/impl/ElementMemory.java
  */
 public class memoryElement extends Element {
-    private final MinecraftClient CLIENT_OBJ = MinecraftClient.getInstance();
 
     public memoryElement() {
         super(true, 0.0, 0.0);
